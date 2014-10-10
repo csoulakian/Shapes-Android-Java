@@ -56,9 +56,42 @@ public class BoundingBox implements Visitor<Location> {
         //int m = Collections.max(points);
         //for (int i : points.get(i))(
             //Point q = points.get(i);
-        //)
-
         //think about putting in super.getX() or super.getY() for a point
-        return null;
+
+
+        //casting the resulting array from s.getPoints().toArray()
+        //(which is type Object) to the type Point
+        //left side of = initializes the array of points to a variable points
+        Point[] points = (Point[]) s.getPoints().toArray();
+        int i = 0;
+        int[] xValues = new int[points.length], yValues = new int[points.length];
+        //adds all the x point values to xValues array
+        //does same for y point values
+        for (Point point : points){
+            xValues[i] = point.getX();
+            yValues[i] = point.getY();
+            i++;
+        }
+
+        //finds min and max in each of the 2 arrays
+        int xMin = xValues[0], xMax = xValues[0];
+        int yMin = yValues[0], yMax = yValues[0];
+        for (int k = 1; k < i; k++) {
+            if (xValues[k] < xMin) {
+                xMin = xValues[k];
+            }
+            if (xValues[k] > xMax) {
+                xMax = xValues[k];
+            }
+            if (yValues[k] < yMin) {
+                yMin = yValues[k];
+            }
+            if (yValues[k] > yMax) {
+                yMax = yValues[k];
+            }
+
+        }
+
+        return new Location(xMin, yMin, new Rectangle(xMax-xMin, yMax-yMin));
 	}
 }
