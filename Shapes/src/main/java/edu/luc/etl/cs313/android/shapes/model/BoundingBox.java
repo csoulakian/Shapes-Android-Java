@@ -52,12 +52,6 @@ public class BoundingBox implements Visitor<Location> {
 
 	@Override
 	public Location onPolygon(final Polygon s) {
-		//final List<? extends Point> points = s.getPoints();
-        //int m = Collections.max(points);
-        //for (int i : points.get(i))(
-            //Point q = points.get(i);
-        //think about putting in super.getX() or super.getY() for a point
-
 
         //casting the resulting array from s.getPoints().toArray()
         //(which is type Object) to the type Point
@@ -89,9 +83,7 @@ public class BoundingBox implements Visitor<Location> {
             if (yValues[k] > yMax) {
                 yMax = yValues[k];
             }
-
         }
-
         return new Location(xMin, yMin, new Rectangle(xMax-xMin, yMax-yMin));
 	}
 }
