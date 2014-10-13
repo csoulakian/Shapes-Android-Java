@@ -5,7 +5,7 @@ package edu.luc.etl.cs313.android.shapes.model;
  */
 public class Point extends Location {
 
-	// TODO your job
+	// DONE your job
 	// HINT: use a circle with radius 0 as the shape!
 
     private static final Shape dot = new Circle(0);
@@ -16,13 +16,4 @@ public class Point extends Location {
 		assert y >= 0;
 	}
 
-    @Override
-    public int getX() {
-        return super.getX();
-    }
-
-    @Override
-    public int getY() {
-        return super.getY();
-    }
 }
