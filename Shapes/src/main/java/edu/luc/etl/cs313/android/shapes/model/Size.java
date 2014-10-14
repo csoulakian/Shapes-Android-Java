@@ -6,7 +6,7 @@ package edu.luc.etl.cs313.android.shapes.model;
  */
 public class Size implements Visitor<Integer> {
 
-	// TODO entirely your job
+	// DONE entirely your job
 
 	@Override
 	public Integer onPolygon(final Polygon p) {
@@ -20,14 +20,11 @@ public class Size implements Visitor<Integer> {
 
 	@Override
 	public Integer onGroup(final Group g) {
-/*        int total = 0;
-        for(Shape s: g.getShapes()){
-            if (s instanceof Rectangle || s instanceof Circle || s instanceof Polygon) {
-                total++;
-            }
-        }*/
-        return g.getShapes().size();
-        //return statement worked for simpleGroup, not complex
+        int runningT = 0;
+        for(Shape s : g.getShapes()){
+            runningT += s.accept(this);
+        }
+        return runningT;
 	}
 
 	@Override
@@ -37,21 +34,21 @@ public class Size implements Visitor<Integer> {
 
 	@Override
 	public Integer onOutline(final Outline o) {
-		return 1;
+        return o.getShape().accept(this);
 	}
 
 	@Override
 	public Integer onFill(final Fill c) {
-		return 1;
+        return c.getShape().accept(this);
 	}
 
 	@Override
 	public Integer onLocation(final Location l) {
-		return 1;
+        return l.getShape().accept(this);
 	}
 
 	@Override
 	public Integer onStroke(final Stroke c) {
-		return 1;
+        return c.getShape().accept(this);
 	}
 }

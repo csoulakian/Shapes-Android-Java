@@ -8,9 +8,16 @@ import java.util.List;
  */
 public class Polygon extends Group {
 
-	public Polygon(final Point... points) {
+	public int polygonTotal = 0;
+
+    public Polygon(final Point... points) {
 		super(points);
+        polygonTotal++;
 	}
+
+    public  int getPolygonTotal(){
+        return polygonTotal;
+    }
 
 	@SuppressWarnings("unchecked")
 	public List<? extends Point> getPoints() {
