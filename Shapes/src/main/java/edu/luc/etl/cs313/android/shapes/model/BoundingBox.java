@@ -15,7 +15,9 @@ public class BoundingBox implements Visitor<Location> {
 	@Override
 	public Location onCircle(final Circle c) {
 		final int radius = c.getRadius();
-		return new Location(-radius, -radius, new Rectangle(2 * radius, 2 * radius));
+        int x = -radius;
+        int y = -radius;
+		return new Location(x, y, new Rectangle(2 * radius, 2 * radius));
 	}
 
 	@Override
@@ -25,16 +27,42 @@ public class BoundingBox implements Visitor<Location> {
 
 	@Override
 	public Location onGroup(final Group g) {
+        int n = 0;
+        Size h = new Size();
+        int[] xVal = new int[h.onGroup(g).intValue()];
+        int[] yVal = new int[h.onGroup(g).intValue()];
+        for (Shape s : g.getShapes()) {
+            xVal[n] = s.accept(this).getX();
+            yVal[n] = s.accept(this).getY();
+            n++;
+        }
 
-		return null;
-	}
+        int xMin = xVal[0], xMax = xVal[0];
+        int yMin = yVal[0], yMax = yVal[0];
+        for (int k = 1; k < n; k++) {
+            if (xVal[k] < xMin) {
+                xMin = xVal[k];
+            }
+            if (xVal[k] > xMax) {
+                xMax = xVal[k];
+            }
+            if (yVal[k] < yMin) {
+                yMin = yVal[k];
+            }
+            if (yVal[k] > yMax) {
+                yMax = yVal[k];
+            }
+
+        }
+        return new Location(xMin, yMin, new Rectangle(xMax-xMin, yMax-yMin));
+    }
 
 	@Override
 	public Location onLocation(final Location l) {
-        Location k = l.getShape().accept(this);
-        k.y = l.getX();
-        int y = l.getY();
-        return l.getShape().accept(this);
+        //return new Location(l.getX(), l.getY(),
+        //        new Rectangle(((Rectangle) l.shape).getWidth(), ((Rectangle) l.shape).getHeight()));
+        return new Location(l.getX(), l.getY(),
+                new Rectangle(l.getShape().accept(this).getX(), l.getShape().accept(this).getY()));
 	}
 
 	@Override
@@ -86,6 +114,8 @@ public class BoundingBox implements Visitor<Location> {
                 yMax = yValues[k];
             }
         }
+        int x = xMin;
+        int y = yMin;
         return new Location(xMin, yMin, new Rectangle(xMax-xMin, yMax-yMin));
 	}
 }
