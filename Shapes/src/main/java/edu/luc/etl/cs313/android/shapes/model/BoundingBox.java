@@ -3,6 +3,9 @@ package edu.luc.etl.cs313.android.shapes.model;
 import java.util.Collections;
 import java.util.List;
 
+
+import static java.lang.Math.abs;
+
 /**
  * A shape visitor for calculating the bounding box, that is, the smallest
  * rectangle containing the shape. The resulting bounding box is returned as a
@@ -10,7 +13,7 @@ import java.util.List;
  */
 public class BoundingBox implements Visitor<Location> {
 
-	// TODO entirely your job (except onCircle)
+	// Done entirely your job (except onCircle)
 
 	@Override
 	public Location onCircle(final Circle c) {
@@ -29,12 +32,14 @@ public class BoundingBox implements Visitor<Location> {
 	public Location onGroup(final Group g) {
         int n = 0;
         Size h = new Size();
-        int[] xVal = new int[h.onGroup(g).intValue()];
-        int[] yVal = new int[h.onGroup(g).intValue()];
+        int[] xVal = new int[2*(h.onGroup(g).intValue())];
+        int[] yVal = new int[2*(h.onGroup(g).intValue())];
         for (Shape s : g.getShapes()) {
-            xVal[n] = s.accept(this).getX();
+            xVal[n] = s.accept(this).getX() ;
+            xVal[n+1] = s.accept(this).getX() + ((Rectangle) s.accept(this).getShape()).getWidth();
             yVal[n] = s.accept(this).getY();
-            n++;
+            yVal[n+1] = s.accept(this).getY() + ((Rectangle) s.accept(this).getShape()).getHeight();
+            n=n+2;
         }
 
         int xMin = xVal[0], xMax = xVal[0];
@@ -59,10 +64,10 @@ public class BoundingBox implements Visitor<Location> {
 
 	@Override
 	public Location onLocation(final Location l) {
-        //return new Location(l.getX(), l.getY(),
-        //        new Rectangle(((Rectangle) l.shape).getWidth(), ((Rectangle) l.shape).getHeight()));
-        return new Location(l.getX(), l.getY(),
-                new Rectangle(l.getShape().accept(this).getX(), l.getShape().accept(this).getY()));
+
+        return new Location(l.getX() - abs(l.getShape().accept(this).getX()),
+                l.getY()-abs(l.getShape().accept(this).getY()),
+                l.getShape().accept(this).getShape());
 	}
 
 	@Override
