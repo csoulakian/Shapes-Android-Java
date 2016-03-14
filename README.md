@@ -1,6 +1,9 @@
 Loyola University Chicago 
+
 Fall 2014
+
 COMP 313 - Intermediate Object Oriented Development
+
 Project 3 - Pair Project
 
 ## Learning Objectives ##
